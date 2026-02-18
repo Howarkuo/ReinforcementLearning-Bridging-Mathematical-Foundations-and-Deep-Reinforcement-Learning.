@@ -9,4 +9,4 @@
 
 ## Performance
 ![PPO_performance](results/ppo_performance.png)
-![Q_learning_performance](results/q_learning_performance.png)
+![Q_learning_performance](results/training_performance.png)
