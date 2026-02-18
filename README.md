@@ -1,18 +1,1 @@
-﻿# Opengym_ReinforcementLearning
-
-## Demonstration
-
-
-https://github.com/user-attachments/assets/14bb8d31-ec42-4e9f-9101-5de88d2358cf
-
-
-
-<div align="Left">
-  <h3> PPO-Episode 500</h3>
-  <video src="[https://github.com/Howarkuo/Opengym_ReinforcementLearning/issues/1#issue-3958214989](https://github.com/user-attachments/assets/14bb8d31-ec42-4e9f-9101-5de88d2358cf)" width="400" controls></video>
-</div>
-
-## Training Results
-![PPO_performance](results/ppo_performance.png)
-
-![Q_learning_performance](results/training_performance.png)
+믯⎿传数杮浹剟楥普牯散敭瑮敌牡楮杮਍਍⌣䐠浥湯瑳慲楴湯਍਍਍瑨灴㩳⼯楧桴扵挮浯甯敳⵲瑡慴档敭瑮⽳獡敳獴ㄯ戴㡢㍤ⴱ捥㈴㐭㥥ⵦㄹ㄰㔭敤㠸㉤㔳挸൦ഊഊഊ㰊楤⁶污杩㵮䰢晥≴ാ 㰠㍨‾偐ⵏ灅獩摯⁥〵㰰栯㸳਍†瘼摩潥猠捲∽桛瑴獰⼺术瑩畨⹢潣⽭潈慷歲潵伯数杮浹剟楥普牯散敭瑮敌牡楮杮椯獳敵⽳⌱獩畳ⵥ㤳㠵ㄲ㤴㤸⡝瑨灴㩳⼯楧桴扵挮浯甯敳⵲瑡慴档敭瑮⽳獡敳獴ㄯ戴㡢㍤ⴱ捥㈴㐭㥥ⵦㄹ㄰㔭敤㠸㉤㔳挸⥦•楷瑤㵨㐢〰•潣瑮潲獬㰾瘯摩潥ാ㰊搯癩ാഊ⌊‣牔楡楮杮删獥汵獴਍嬡偐彏数晲牯慭据嵥爨獥汵獴瀯潰灟牥潦浲湡散瀮杮ഩഊℊ兛江慥湲湩彧数晲牯慭据嵥爨獥汵獴琯慲湩湩彧数晲牯慭据⹥湰⥧਍
