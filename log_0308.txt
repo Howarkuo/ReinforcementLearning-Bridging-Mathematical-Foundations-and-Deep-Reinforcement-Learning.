@@ -1,0 +1,67 @@
+1. difference between agent and epsilon agent
+episilon agent: 
+# for epsilon greedy agent: 
+        if np.random.random()< self.epsilon:
+            # exploration with probability: epsilon
+            # find action arm within complete random
+            current_action = np.random.randint(0, len(self.q_values))
+        else:
+            # exploitation
+            current_action =argmax(self.q_values)
+
+2. Main Parameters(epsilon greedy agent):
+Number of Independent runs : 200
+Time steps per run: 1000
+Exploration Probability: 10 % 
+
+3. Random simulation (numpy - epsilon greedy agent)
+- the decision to explore ( when it randomly chooses to explore)
+- the random action the agent randomly starts with
+- tie-breaking (action index when multiple actions have the same maximum value are equal in argmax)
+- reward distribution (randomly sampled from a Gaussian)
+
+
+4. To wipe out random flucation 
+4.1. the power of averaging: 'big picture of averaging'
+np.mean(all_reward, axis =0) -- wash out noise by 200 runs average
+
+4.2 stocahsticity and seeds
+plotting only two individual runs
+
+scores[-1] / (i+1) -- cumulative average (total reward so far divided by step number) t
+4.2.1: Different percentage of Exploratory Action taken by 2 runs
+
+5. is the  statistical significance tests needed?
+> no, because we have access to simulators for our experiments, we use the simpler strategy of running for a large number of runs and ensuring that the confidence intervals do not overlap.
+
+6. comparing values of epsilon
+epsilons = [0.0, 0.01, 0.1, 0.4]
+
+10% exploration is the best
+0.1 > 0.01 > 0 > 40 %
+0.01 : explores too little takes to long to find the best arm, still in discovery by step 1000
+0.4: Spend too much time choosing randomly and pick suboptimal bad arm
+
+7. the effect of step size
+
+step_sizes = [0.01, 0.1, 0.5, 1.0, '1/N(A)']
+
+# measure the amount of the time the best action is taken
+
+  if action == best_arm:
+                best_action_chosen.append(1)
+            else:
+                best_action_chosen.append(0)
+            if run == 0:
+                q_values[step_size].append(np.copy(rl_glue.agent.q_values))
+        best_actions[step_size].append(best_action_chosen)
+    ax.plot(np.mean(best_actions[step_size], axis=0))
+
+8. conclusion
+N/A: Perform best since it move quickly in the first but reduce later so it is less susceptible to the stochasticity of the rewards.
+0.5, 1.0 : overcorrect/ oscillate -  susceptible to stochasticity in the rewards
+0.1: doest not oscillate
+
+for 1000 steps: N/A> 0.1> 0.5 > 1.0 > 0.01
+
+A larger step size moves us more quickly toward the true value, but can make our estimated values oscillate around the expected value. A step size that reduces over time can converge to close to the expected value, without oscillating. On the other hand, such a decaying stepsize is not able to adapt to changes in the environment. Nonstationarity---and the related concept of partial observability---is a common feature of reinforcement learning problems and when learning online.  

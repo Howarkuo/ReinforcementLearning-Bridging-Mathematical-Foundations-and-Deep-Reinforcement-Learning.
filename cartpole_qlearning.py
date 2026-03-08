@@ -1,5 +1,13 @@
 # model free learning 
 # functions: select_action(), stimulate(), get_exploration_rate, get_learning_rate, state_to_bucket
+# Concepts
+# 1. Incremental update rule
+# Newestimate <- Oldestimate + stepsize (Target - oldestimate)
+# old_estimate = q_table [state_0 + (action,)]
+# target = reward + (discount_factor * best_q)
+# step_size = learning_rate
+# new_estimate = old_estimate + step_size * (target - old_estimate )
+# update q_table : q_table [state_0 + (action,)]
 
 # https://blog.techbridge.cc/2017/11/04/openai-gym-intro-and-q-learning/
 import gym
@@ -34,7 +42,8 @@ print(STATE_BOUNDS)
 #   [-0.8726646259971648, 0.8726646259971648]                  # Angular Velocity (Your override)
 # ]
 
-## Creating a Q-Table for each state-action pair
+## Initialization: Creating a Q-Table for each state-action pair
+# for num_buckets (1,1,6,3 = 18)Imagine 18 seperate folders with 2 slots 'left' and 'right' 
 q_table = np.zeros(NUM_BUCKETS + (NUM_ACTIONS,))
 print(q_table)
 # q_tabel: (1,1,6,3,2)

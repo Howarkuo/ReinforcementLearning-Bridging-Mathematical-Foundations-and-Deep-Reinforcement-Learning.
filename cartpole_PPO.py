@@ -1,3 +1,21 @@
+#  REINFORCE-> Actor Critic Architecture
+# actor: fc_pi
+# critic: fc_v
+
+# states - 
+# W relu- O - 
+# softmax - 
+# action probs - 
+# loss (action / rewards )
+
+# Architecture
+# 1. Environment learning interaction: s,r done, info = env.step(a)
+# 2. dl framework : torch.n and torch.optim.adam
+# 3. function approximation: neural network to map states to value 
+# 4. temporal discouting : gamma to prioritize immediate reward over future rewards
+
+# output: probability distribution : handles both discrete and continious actiosn
+
 import gym
 import torch
 import torch.nn as nn
