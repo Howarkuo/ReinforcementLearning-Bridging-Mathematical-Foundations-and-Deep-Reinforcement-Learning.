@@ -119,6 +119,85 @@ Conclusions on Step Size for 1000 steps: $1/N(A) > 0.1 > 0.5 > 1.0 > 0.01$
 ## Reference 
 https://github.com/seungeunrho/minimalRL
 
+
+# Grid World City: Optimizing Street Parking with Reinforcement Learning 🚗💰
+
+This project demonstrates the power of Reinforcement Learning (RL) by solving a real-world economic problem: **City Street Parking**. 
+
+Using **Markov Decision Processes (MDPs)**, we built an AI agent that independently discovers the concepts of **Supply and Demand** and **Surge Pricing** without any prior knowledge of economics. The agent learns to dynamically adjust parking prices to maximize city utility and revenue.
+
+---
+
+### 🏙️ The Environment: ParkingWorld
+The simulation models a city street with 10 parking spaces and 4 price tiers.
+
+* **States ($S$):** The number of cars currently parked [0, 1, 2... 10].
+* **Actions ($A$):** The price point the city sets for the next hour [0=Cheap, 1, 2, 3=Expensive].
+* **Transitions ($p$):** The "laws of physics/economics." If you set a low price, the probability of cars arriving increases. If you set a high price, the probability of cars leaving increases.
+* **The Goal (Rewards):** The city wants to maximize social welfare. The highest reward is given when the street is almost full (the "Sweet Spot"), but a penalty is applied if the street becomes 100% full, as this causes traffic and driver frustration.
+
+---
+
+### 🧠 Section 1: Policy Evaluation
+Before we can optimize our strategy, we need to know how to measure our current one. 
+
+**Iterative Policy Evaluation** takes a specific policy (a set of rules) and calculates the exact expected long-term value of every state by looking into the future.
+
+**The Bellman Expectation Equation:**
+$$\huge v(s) \leftarrow \sum_a \pi(a | s) \sum_{s', r} p(s', r | s, a)[r + \gamma v(s')] $$
+
+**How the code works:**
+It loops through the environment, acting as a **Calculator**. For every state, it checks what actions the policy ($\pi$) dictates, looks at the possible outcomes ($p$), and calculates a weighted average of the immediate rewards ($r$) plus the discounted future value ($\gamma v(s')$).
+
+---
+
+### 📈 Section 2: Policy Iteration
+Policy Iteration is a "two-step dance" that alternates between evaluating a policy and making it strictly better.
+
+1.  **Complete Evaluation:** Sweep through the city dozens of times using the equation above until the value estimates ($V$) completely converge.
+2.  **Complete Improvement (Greedification):** Freeze the value estimates. Look at every action available in state $s$, and update the policy to be 100% greedy with respect to the highest expected score.
+
+**The Policy Improvement Equation:**
+$$\huge \pi'(s) = \arg\max_a \sum_{s', r} p(s', r | s, a)[r + \gamma V(s')] $$
+
+> **Note:** In the code, `evaluate_policy()` cares about the **Value** (updating $V[s]$ with the average score), while `q_greedify_policy()` cares about the **Index** (updating $\pi[s]$ to the action that triggered the highest score).
+
+---
+
+### ⚡ Section 3: Value Iteration
+Policy Iteration is mathematically sound but slow. Why waste time perfectly evaluating a mediocre, average policy?
+
+**Value Iteration** acts as the ultimate shortcut. Instead of evaluating a fixed policy, it assumes you are always going to pick the absolute best action. It merges evaluation and improvement into a single, aggressive step.
+
+**The Bellman Optimality Equation:**
+$$\huge v(s) \leftarrow \max_a \sum_{s', r} p(s', r | s, a)[r + \gamma v(s')] $$
+
+**The Difference:** Notice how $\sum_a \pi(a | s)$ from Policy Iteration is replaced with $\max_a$. Instead of a weighted average, we simply grab the highest expected return and overwrite the value array in-place. We throw away the policy array entirely until the very end, extracting the optimal playbook only once the values have hit their absolute mathematical ceiling.
+
+---
+
+### 🎯 The Results: Discovering Supply and Demand
+
+![policy_optimal.png](gridworld/policy_optimal.png)
+
+Both Policy Iteration and Value Iteration are mathematically guaranteed to arrive at the exact same optimal solution. Here is what the AI learned for a 10-space street:
+
+| State (Occupancy) | Value (Long-term Reward) | Action (Optimal Price Tier) |
+| :--- | :--- | :--- |
+| 0 (Empty) | 81.6 | 0 (Cheapest) |
+| ... | ... | 0 |
+| 8 (Almost Full) | 94.3 | 0 (Cheapest) |
+| **9 (The Sweet Spot)** | **95.3 (Peak Value!)** | **3 (Most Expensive)** |
+| 10 (Penalty Zone) | 89.5 (Value drops) | 3 (Most Expensive) |
+
+#### Interpretation of the Data:
+1.  **The Value Function (The Climb & The Cliff):** The Value Function monotonically increases as more parking is used (from 81.6 up to 94.3), because empty streets generate zero utility. The value peaks exactly at State 9 (95.3). However, the moment the street hits State 10, the value plummets to 89.5 because of the 100% occupancy penalty.
+2.  **The Policy (Automated Surge Pricing):** * **States 0-8:** The algorithm dictates **Action 0 (Cheap)**. The AI knows it needs to climb the value graph, so it lowers the price to mathematically increase the probability of cars arriving.
+    * **States 9-10:** The exact second the street hits 9 cars, the AI slams the brakes and dictates **Action 3 (Surge Pricing)**. It jacks the price up to scare away new cars and encourage parked drivers to leave, forming a protective barrier that stops the city from falling off the "cliff" into State 10.
+
+**Conclusion:** Good policies are policies that spend more time in desirable states and less time in undesirable states. Without any pre-programmed knowledge of economics, the Bellman equations successfully modeled the unwritten laws of supply and demand!
+
+
 # Discussions
 Q1> Compare bandits to supervised learning
 
