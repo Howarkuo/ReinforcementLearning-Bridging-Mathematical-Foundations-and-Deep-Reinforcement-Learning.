@@ -1,7 +1,7 @@
-# Opengym+RLGlue_ReinforcementLearning
+# ReinforcementLearning: Bridging Mathematical Foundations and Deep Reinforcement Learning.
 
 
-## Demonstration
+## 📺 Demonstration
 
 https://github.com/user-attachments/assets/788b38a7-cef0-4a6e-8d4d-079dcf8c83ed
 
@@ -12,19 +12,97 @@ https://github.com/user-attachments/assets/788b38a7-cef0-4a6e-8d4d-079dcf8c83ed
   <video src="[https://github.com/YOUR-VIDEO-LINK-HERE](https://github.com/user-attachments/assets/788b38a7-cef0-4a6e-8d4d-079dcf8c83ed
 ).mp4" width="400" controls></video>
 </div>
+---
 
+### 📈 Performance Overview
+| Algorithm | Architecture | Learning Type | State Space |
+| :--- | :--- | :--- | :--- |
+| **Multi-Armed Bandit** | Tabular | Stateless | N/A |
+| **Value Iteration** | Model-Based | Planning | Discrete |
+| **Q-Learning** | Tabular TD | Model-Free | Discretized |
+| **PPO / DQN** | Neural Network | Deep RL | Continuous |
+
+---
 ## Performance
 ![PPO_performance](results/ppo_performance.png)
 ![Q_learning_performance](results/training_performance.png)
 
+This repository serves as a comprehensive exploration of **Reinforcement Learning (RL)**, tracing the evolution of autonomous decision-making from foundational uncertainty to high-dimensional neural control. By implementing a diverse array of algorithms—from **Multi-Armed Bandits** to **Proximal Policy Optimization (PPO)**—this project demonstrates how agents can independently discover the "hidden laws" of economics and physics through pure trial-and-error.
 
-## Implementaion and theory
-A significant portion of the theory and logs below are derived from **Fundamentals of Reinforcement Learning** offered by the University of Alberta & Alberta Machine Intelligence Institute (Amii), taught by Martha White and Adam White.
+---
 
-* Formalize problems as Markov Decision Processes (MDPs).
-* Understand basic exploration methods and the exploration/exploitation tradeoff.
-* Use value functions as a general-purpose tool for optimal decision-making.
-* Implement dynamic programming as an efficient solution approach.
+## 🧠 The Core Logic: The Incremental Update Rule
+Regardless of complexity, every agent in this project is driven by a single, universal mathematical backbone. This "incremental mind" allows the agent to bridge the gap between current knowledge and future optimal behavior:
+
+$$\text{NewEstimate} \leftarrow \text{OldEstimate} + \alpha \times [\text{Target} - \text{OldEstimate}]$$
+
+By manipulating the **Target** (from immediate rewards to discounted future values) and the **Step-Size ($\alpha$)**, we scale intelligence from simple state-less decisions to complex, continuous control.
+
+---
+### 🗺️ Phase 1: The Foundation — Decisions Under Uncertainty
+**Environment:** Multi-Armed Bandits (Stateless)  
+**Key Concept:** The Exploration-Exploitation Trade-off
+
+The journey begins with the simplest form of RL: picking the best "arm" without an environmental state. Here, we master the $\epsilon$-Greedy strategy.
+
+```python
+if np.random.random() < self.epsilon:
+    current_action = np.random.randint(0, len(self.q_values)) # Exploration
+else:
+    current_action = np.argmax(self.q_values) # Exploitation
+```
+
+* **Managing Stochasticity:** We average over 200 independent runs to wash out random fluctuations and see the "big picture."
+* **Optimal $\epsilon$:** Testing revealed that 10% (0.1) is the "sweet spot" for balancing discovery with profit.
+* **Step Size Logic:** We found that decaying step sizes ($1/N(A)$) excel in stationary worlds, while constant step sizes are required for the non-stationarity of the real world.
+
+---
+
+### 🗺️ Phase 2: The Architecture — Structured Worlds (MDPs)
+**Environment:** GridWorld City (ParkingWorld)  
+**Key Concept:** Planning via the Bellman Equations
+
+We move from "arms" to **States**. Actions now have consequences that change the environment (e.g., setting a low price increases parking occupancy).
+
+**The Math of Planning**
+We implement Policy Iteration and Value Iteration using the Bellman Optimality Equation:
+$$\huge v(s) \leftarrow \max_a \sum_{s', r} p(s', r | s, a)[r + \gamma v(s')] $$
+
+> **The Emergent Discovery:** Without any pre-programmed knowledge of economics, the agent independently discovered **Surge Pricing**. It jacked up prices at State 9 ("The Sweet Spot") to prevent the city from falling into the State 10 "Penalty Zone."
+
+---
+
+### 🗺️ Phase 3: The Discovery — Model-Free Learning (Tabular)
+**Environment:** CartPole-v1  
+**Key Concept:** Discretization & Temporal Difference (TD) Learning
+
+In this phase, we no longer have a "map" ($p$) of the world. The agent must learn by doing.
+
+* **The Bucket Strategy:** Since the CartPole state space is infinite/continuous, we use `state_to_bucket()` to discretize it into 18 distinct scenarios.
+* **The Update:** We use the TD-error to update the Q-Table in real-time:
+```python
+q_table[state_0 + (action,)] += learning_rate * (reward + discount_factor * (best_q) - old_q)
+```
+*Note: This is the Incremental Update Rule in its purest form.*
+
+---
+
+### 🗺️ Phase 4: The Scale — Deep Reinforcement Learning
+**Environment:** CartPole-v1 (Continuous)  
+**Algorithms:** DQN & PPO  
+**Key Concept:** Neural Function Approximation
+
+Finally, we remove the "buckets." When the state space is too large for a table, we use Neural Networks to approximate values.
+
+* **DQN:** Utilizes a **Replay Buffer** to break the correlation between consecutive experiences, stabilizing the "OldEstimate" during training.
+* **PPO:** Introduces an **Actor-Critic** architecture. The "Actor" proposes actions while the "Critic" evaluates them, using a clipped objective function to ensure training updates aren't too aggressive.
+
+---
+
+### 📚 References & Acknowledgments
+* Theory derived from *Fundamentals of Reinforcement Learning* (University of Alberta & Amii).
+* Code structures inspired by `minimalRL`.
+
 
 ### 1. The Epsilon-Greedy Agent
 
