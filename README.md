@@ -100,10 +100,10 @@ Finally, we remove the "buckets." When the state space is too large for a table,
 ### Deep Q-Network (DQN) Core Logic
 
 **The DQN Target (The "True" Score):**
-$$Y = r + \gamma \max_{a'} Q_{target}(s', a')$$
+$$\huge Y = r + \gamma \max_{a'} Q_{target}(s', a')$$
 
 **The DQN Loss (The Error):**
-$$Loss = (Q_{current}(s, a) - Y)^2$$
+$$\huge Loss = (Q_{current}(s, a) - Y)^2$$
 
 *How it works:*
 
