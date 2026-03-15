@@ -97,6 +97,16 @@ Finally, we remove the "buckets." When the state space is too large for a table,
 * **DQN:** Utilizes a **Replay Buffer** to break the correlation between consecutive experiences, stabilizing the "OldEstimate" during training.
 * **PPO:** Introduces an **Actor-Critic** architecture. The "Actor" proposes actions while the "Critic" evaluates them, using a clipped objective function to ensure training updates aren't too aggressive.
 
+### Deep Q-Network (DQN) Core Logic
+
+**The DQN Target (The "True" Score):**
+$$Y = r + \gamma \max_{a'} Q_{target}(s', a')$$
+
+**The DQN Loss (The Error):**
+$$Loss = (Q_{current}(s, a) - Y)^2$$
+
+**How it works:**
+The neural network looks at its prediction ($Q_{current}$), compares it to what actually happened plus the future estimate ($Y$), and tweaks its weights to make the error smaller next time.
 ---
 
 ### 📚 References & Acknowledgments
