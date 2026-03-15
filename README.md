@@ -107,7 +107,7 @@ $$Loss = (Q_{current}(s, a) - Y)^2$$
 
 *How it works:*
 
-The neural network looks at its prediction ($Q_{current}$), compares it to what actually happened plus the future estimate ($Y$), and tweaks its weights to make the error smaller next time.
+>The neural network looks at its prediction ($Q_{current}$), compares it to what actually happened plus the future estimate ($Y$), and tweaks its weights to make the error smaller next time.
 ---
 
 ### 📚 References & Acknowledgments
